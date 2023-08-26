@@ -2,6 +2,7 @@ package br.com.rafael.floriano.springintegrationwithchatgpt.service;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -14,6 +15,7 @@ public class ServiceGpt {
 
     private WebClient webClient;
     //Key sempre no application.proprieties
+    @Value("${spring.openai.api.key}")
     String apiKey = "null";
 
     public ServiceGpt(WebClient.Builder builder) {
@@ -26,7 +28,9 @@ public class ServiceGpt {
     public Mono<ChatGPTResponse> createResponde(String topic) {
         ChatGPTResquest resquest = createQuestionResquest(topic);
 
-
+        return webClient.post().bodyValue(resquest)
+                .retrieve()
+                .bodyToMono(ChatGPTResponse.class);
     }
 
     public ChatGPTResquest createQuestionResquest(String topic) {
