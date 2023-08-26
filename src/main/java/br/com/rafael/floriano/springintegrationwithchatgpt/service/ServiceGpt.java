@@ -25,12 +25,12 @@ public class ServiceGpt {
                 .build();
     }
 
-    public Mono<ChatGPTResponse> createResponde(String topic) {
+    public Mono<String> createGPTResponse(String topic) {
         ChatGPTResquest resquest = createQuestionResquest(topic);
 
         return webClient.post().bodyValue(resquest)
                 .retrieve()
-                .bodyToMono(ChatGPTResponse.class);
+                .bodyToMono(ChatGPTResponse.class).map(chatGPTResponse -> chatGPTResponse.choices().get(0).text());
     }
 
     public ChatGPTResquest createQuestionResquest(String topic) {
