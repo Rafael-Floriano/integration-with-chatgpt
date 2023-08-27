@@ -10,8 +10,8 @@ import reactor.core.publisher.Mono;
 public class ChatGptController {
     @Autowired
     ServiceGpt serviceGpt;
-    @PostMapping("/sendPromptMessage/{prompt}")
-    public Mono<String> sendPromptMessage(@RequestParam("prompt") String prompt) {
+    @PostMapping("/sendPromptMessage")
+    public Mono<String> sendPromptMessage(@RequestParam String prompt) {
         return serviceGpt.createGPTResponse(prompt);
     }
 }
